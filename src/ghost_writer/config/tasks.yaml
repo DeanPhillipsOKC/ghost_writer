@@ -1,0 +1,52 @@
+ideation_task:
+  description: >
+    Generate ideas for the novel focusing on themes, characters, and plot concepts.
+
+    The idea to expand upon:
+    {idea}
+  expected_output: >
+    A document containing a list of potential novel ideas, including themes, character arcs, and plot outlines.
+  agent: idea_developer
+  output_file: >
+      output/ideation.json
+
+plot_development_task:
+  description: >
+    Develop the plot structure of the novel, including rising action, climax, falling action, and resolution.
+
+    The idea to expand upon:
+    {idea}
+  expected_output: >
+    A detailed plot outline that includes the main events and character arcs.
+  context:
+    - ideation_task
+  agent: plot_developer
+  output_file: output/plot_development.json
+
+character_development_task:
+  description: >
+    Create multi-dimensional characters with emotional arcs that resonate with readers.
+
+    The idea to expand upon:
+    {idea}
+  expected_output: >
+    A character profile document that includes character backgrounds, motivations, and emotional arcs.
+  context:
+    - ideation_task
+  agent: character_developer
+  output_file: output/character_development.json
+
+outline_development_task:
+  description: >
+    Create a detailed outline of the novel, including chapter breakdowns and key events.
+
+    The idea to expand upon:
+    {idea}
+  expected_output: >
+    A comprehensive outline document that includes chapter summaries and key events.
+  context:
+    - ideation_task
+    - plot_development_task
+    - character_development_task
+  agent: outline_developer
+  output_file: output/outline_development.json
