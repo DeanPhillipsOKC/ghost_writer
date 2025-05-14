@@ -56,10 +56,7 @@ class GhostWriter():
     def on_before_kickoff(self, inputs):
         # Delete the output directory if it exists
         shutil.rmtree('output', ignore_errors=True)
-        os.makedirs('output/src', exist_ok=True)
-
-        # Copy the contents of the assets directory to the output/src directory
-        shutil.copytree('assets', 'output/src', dirs_exist_ok=True)
+        os.makedirs('output', exist_ok=True)
 
         return inputs
 
@@ -121,16 +118,16 @@ class GhostWriter():
     
     def write_chapter(self, chapter: Chapter):
         task = Task(
-            description=f"Writer chater {chapter.chapter_number} ({chapter.chapter_description}) \
+            description=f"Write chapter {chapter.chapter_number} ({chapter.chapter_description}) \
                 with characters {chapter.characters} and plot {chapter.plot.description}",
             expected_output="A well-written chapter that follows the outline and overall plot and ideas. Use markdown",
-            aagent=self.author(),
+            agent=self.author(),
             output_file = f"output/chapter_{chapter.chapter_number:02}.md",
         )
         task.execute_sync()
 
-    def on_outline_created(self, outline: Outline):
-        for chapter in outline.chapters:
+    def on_outline_created(self, task_output):
+        for chapter in task_output.pydantic.chapters:
             self.write_chapter(chapter)
 
     @task

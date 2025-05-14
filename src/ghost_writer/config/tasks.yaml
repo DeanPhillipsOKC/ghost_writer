@@ -7,8 +7,7 @@ ideation_task:
   expected_output: >
     A document containing a list of potential novel ideas, including themes, character arcs, and plot outlines.
   agent: idea_developer
-  output_file: >
-      output/ideation.json
+  output_file: output/ideation.json
 
 plot_development_task:
   description: >
