@@ -35,17 +35,79 @@ character_development_task:
   agent: character_developer
   output_file: output/character_development.json
 
-outline_development_task:
+book_development_task:
   description: >
-    Create a detailed outline of the novel, including chapter breakdowns and key events.
+    If they are not already provided, come up with a title, and author for the book.  Get creative
+    based on the idea and the context of the book.
+
+    Author: {author}
+    Title: {title}
+  expected_output: >
+    Info about the book
+  agent: author
+  output_file: output/book_development.json
+
+act1_development_task:
+  description: >
+    Create a detailed outline of the first act of the novel, including character introductions, setting, and 
+    inciting incidents.
+
+    Purpose: Introduce the world, characters, and status quo.  Establish stakes.
+      - Hook: Something that grabs attention immediately (mystery, unusual voie, threat, or intrigue)
+      - Exposition: Introduce setting, protagonist, tone, and rules of the world.
+      - Inciting Incident: A distruption to the protagonist's life that demands a response.
+      - Plot Point 1 - A choice or event that propels the character into the main conflict or journey.
 
     The idea to expand upon:
     {idea}
   expected_output: >
-    A comprehensive outline document that includes chapter summaries and key events.
+    A comprehensive outline document that can be used to write the first act of the novel.
   context:
     - ideation_task
     - plot_development_task
     - character_development_task
   agent: outline_developer
-  output_file: output/outline_development.json
+  output_file: output/act1_development.json
+
+act2_development_task:
+  description: >
+    Create a detailed outline of the second act of the novel, including character introductions, setting, and 
+    inciting incidents.
+
+    Purpose: Escalate tension, deepen stakes, show character development.
+      - Rising Action: A series of obstacles and encounters that test the protagonist.
+      - Midpoint Twist: A revelation or turning point that reorients the conflict
+      - Personal Stakes Increase: The protagonist changes, or begins to.
+      - Plot Point 2 - A major crisis or low point, usually a loss or betrayal
+
+    The idea to expand upon:
+    {idea}
+  expected_output: >
+    A comprehensive outline document that can be used to write the second act of the novel.
+  context:
+    - ideation_task
+    - plot_development_task
+    - character_development_task
+  agent: outline_developer
+  output_file: output/act2_development.json
+
+act3_development_task:
+  description: >
+    Create a detailed outline of the third act of the novel, including character introductions, setting, and 
+    inciting incidents.
+
+    Purpose: Payoff. Resolve internal and external conflicts. Show transformation.
+      - Climax: Final, most intense confrontation. The protagonist makes a key choice or sacrifice.
+      - Denouement: Loose ends tied up. Reflect on meaning and change.
+      - Final Image: A lasting impression that encapsulates the story’s arc or message.
+
+    The idea to expand upon:
+    {idea}
+  expected_output: >
+    A comprehensive outline document that can be used to write the third act of the novel.
+  context:
+    - ideation_task
+    - plot_development_task
+    - character_development_task
+  agent: outline_developer
+  output_file: output/act3_development.json

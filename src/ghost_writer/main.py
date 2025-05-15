@@ -47,6 +47,8 @@ def run():
 
     inputs = {
         'idea': idea,
+        'author': None,
+        'title': None
     }
     
     try:
