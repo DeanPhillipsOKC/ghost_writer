@@ -6,6 +6,7 @@ from ghost_writer.tools.transcribe_tool import TranscribeTool
 from ghost_writer.tools.illustrator_tool import IllustratorTool
 from ghost_writer.tools.convert_to_pdf_tool import MarkdownToPDFTool
 from ghost_writer.utils.filesystem_utils import purge_directory
+from ghost_writer.utils.markdown_utils import add_page_break, header_markdown, image_markdown
 from typing import List
 from pydantic import BaseModel
 import shutil
@@ -18,9 +19,7 @@ class GhostWriter():
     agents: List[BaseAgent]
     tasks: List[Task]
     artistic_vision: str = None
-
-    PAGE_BREAK = "<div style=\"page-break-after: always;\"></div>\n\n"
-
+    
     chapter_number: int = 1
 
     @before_kickoff
@@ -94,7 +93,8 @@ class GhostWriter():
         )
     
     def write_scene(self, scene: Scene, act: Act, chapter: Chapter):
-        TranscribeTool().run(content = f"#### {scene.scene_title}\n\n")
+        scene_header = header_markdown(text = f"Scene {scene.scene_number}: {scene.scene_title}", level=4)
+        TranscribeTool().run(content = scene_header)
 
         task = Task(
             description=f"Write the scene for the novel with the following plot elements, and characters \
@@ -127,7 +127,8 @@ class GhostWriter():
         TranscribeTool().run(content = f"{paragraphs}\n\n")
 
     def write_chapter(self, chapter: Chapter, act: Act):
-        TranscribeTool().run(content = f"### Chapter {self.chapter_number}: {chapter.chapter_title}\n\n")
+        chapter_header = header_markdown(text = f"Chapter {self.chapter_number}: {chapter.chapter_title}", level=3)
+        TranscribeTool().run(content = chapter_header)
 
         illustrator_tool = IllustratorTool(filename=f'output/images/chapter_{self.chapter_number:02}.png')
         illustrator_tool.run(
@@ -136,17 +137,19 @@ class GhostWriter():
                     Here is some additional information from the art director that should be take into account: \
                         {self.artistic_vision}.")
         
-        TranscribeTool().run(content = f"![Chapter {self.chapter_number} Illustration](images/chapter_{self.chapter_number:02}.png)\n\n")
+        chapter_image_markdown = image_markdown(image_path=f'images/chapter_{self.chapter_number:02}.png', alt_text=f"Chapter {self.chapter_number} Illustration")
+        TranscribeTool().run(content = chapter_image_markdown)
 
         self.chapter_number += 1
 
         for scene in chapter.scenes:
             self.write_scene(scene, act, chapter)
             
-        TranscribeTool().run(content = self.PAGE_BREAK)
+        TranscribeTool().run(content = add_page_break())
 
     def write_act(self, act: Act):
-        TranscribeTool().run(content = f"## Act {act.act_number}: {act.act_title}\n\n")
+        act_header = header_markdown(text = f"Act {act.act_number}: {act.act_title}", level=2)
+        TranscribeTool().run(content = act_header)
 
         for chapter in act.chapters:
             self.write_chapter(chapter, act)
@@ -170,8 +173,11 @@ class GhostWriter():
                 with description '{book.description}'.  Here is some additional information from the \
                     art director that should be take into account: {self.artistic_vision}.")
         
-        TranscribeTool().run(content = f"![Book Cover](images/cover.png)\n\n")
-        TranscribeTool().run(content = f"# {book.title}\n*By {book.author}*\n\n")
+        book_image_markdown = image_markdown(image_path='images/cover.png', alt_text="Book Cover")
+        TranscribeTool().run(content = book_image_markdown)
+        
+        book_header = header_markdown(text = f"Book Title: {book.title}", level=1)
+        TranscribeTool().run(content = book_header)
 
     @task
     def book_development_task(self) -> Task:
