@@ -17,6 +17,8 @@ class GhostWriter():
     agents: List[BaseAgent]
     tasks: List[Task]
 
+    PAGE_BREAK = "<div style="page-break-after: always;"></div>"
+
     @before_kickoff
     def on_before_kickoff(self, inputs):
         # Delete the output directory if it exists
@@ -125,6 +127,8 @@ class GhostWriter():
 
         for scene in chapter.scenes:
             self.write_scene(scene, act, chapter)
+            
+        TranscribeTool().run(content = self.PAGE_BREAK)
 
     def write_act(self, act: Act):
         TranscribeTool().run(content = f"## Act {act.act_number}: {act.act_title}\n\n")
