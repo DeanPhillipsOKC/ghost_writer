@@ -1,10 +1,11 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task, before_kickoff
 from crewai.agents.agent_builder.base_agent import BaseAgent
-from ghost_writer.models import Idea, Plot, Characters, Chapter, Act, Scene, Book
+from ghost_writer.models import Idea, Plot, Characters, Chapter, Act, Scene, Book, ArtisticVision
 from ghost_writer.tools.transcribe_tool import TranscribeTool
 from ghost_writer.tools.illustrator_tool import IllustratorTool
 from ghost_writer.tools.convert_to_pdf_tool import MarkdownToPDFTool
+from ghost_writer.utils.filesystem_utils import purge_directory
 from typing import List
 from pydantic import BaseModel
 import shutil
@@ -18,15 +19,14 @@ class GhostWriter():
     tasks: List[Task]
     artistic_vision: str = None
 
-    PAGE_BREAK = "<div style=\"page-break-after: always;\"></div>"
+    PAGE_BREAK = "<div style=\"page-break-after: always;\"></div>\n\n"
 
     chapter_number: int = 1
 
     @before_kickoff
     def on_before_kickoff(self, inputs):
         # Delete the output directory if it exists
-        shutil.rmtree('output', ignore_errors=True)
-        os.makedirs('output/images', exist_ok=True)
+        purge_directory('output')
 
         return inputs
 
@@ -62,13 +62,6 @@ class GhostWriter():
     def outline_developer(self) -> Agent:
         return Agent(
             config=self.agents_config['outline_developer'],
-            verbose=True
-        )
-    
-    @agent
-    def artist(self) -> Agent:
-        return Agent(
-            config=self.agents_config['artist'],
             verbose=True
         )
     
@@ -165,7 +158,7 @@ class GhostWriter():
         pdf_tool = MarkdownToPDFTool()
         pdf_tool.run(
             markdown_path='output/book.md',
-            output_pdf_path=f'output/book.pdf'
+            output_pdf_path=f'book.pdf'
         )
 
     def on_book_created(self, task_output):
@@ -195,7 +188,7 @@ class GhostWriter():
     def artistic_vision_task(self) -> Task:
         return Task(
             config=self.tasks_config['artistic_vision_task'],
-            output_pydantic=Book,
+            output_pydantic=ArtisticVision,
             callback=self.on_artistic_vision_created,
         )
 

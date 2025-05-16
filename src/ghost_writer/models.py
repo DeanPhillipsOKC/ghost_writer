@@ -67,3 +67,4 @@ class ArtisticVision(BaseModel):
     visual_elements: str
     color_palette: str
     mood_board: str
+    description: str
