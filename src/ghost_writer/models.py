@@ -39,7 +39,6 @@ class Scene(BaseModel):
     
 class Chapter(BaseModel):
     """Outline node for the novel"""
-    chapter_number: int
     chapter_title: str
     chapter_description: str
     chapter_plot: str

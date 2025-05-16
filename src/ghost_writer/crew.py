@@ -17,7 +17,9 @@ class GhostWriter():
     agents: List[BaseAgent]
     tasks: List[Task]
 
-    PAGE_BREAK = "<div style="page-break-after: always;"></div>"
+    PAGE_BREAK = "<div style=\"page-break-after: always;\"></div>"
+
+    chapter_number: int = 1
 
     @before_kickoff
     def on_before_kickoff(self, inputs):
@@ -117,13 +119,15 @@ class GhostWriter():
         TranscribeTool().run(content = f"{paragraphs}\n\n")
 
     def write_chapter(self, chapter: Chapter, act: Act):
-        TranscribeTool().run(content = f"### Chapter {chapter.chapter_number}: {chapter.chapter_title}\n\n")
+        TranscribeTool().run(content = f"### Chapter {self.chapter_number}: {chapter.chapter_title}\n\n")
 
-        illustrator_tool = IllustratorTool(filename=f'output/images/chapter_{chapter.chapter_number:02}.png')
+        illustrator_tool = IllustratorTool(filename=f'output/images/chapter_{self.chapter_number:02}.png')
         illustrator_tool.run(
             prompt=f"Create an illustration for the chapter titled '{chapter.chapter_title}' with description '{chapter.chapter_description}.  IMPORTANT: Do not include any words, just an illustration.'")
         
-        TranscribeTool().run(content = f"![Chapter {chapter.chapter_number} Illustration](images/chapter_{chapter.chapter_number:02}.png)\n\n")
+        TranscribeTool().run(content = f"![Chapter {self.chapter_number} Illustration](images/chapter_{self.chapter_number:02}.png)\n\n")
+
+        self.chapter_number += 1
 
         for scene in chapter.scenes:
             self.write_scene(scene, act, chapter)
