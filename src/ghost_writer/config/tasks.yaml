@@ -47,6 +47,21 @@ book_development_task:
   agent: author
   output_file: output/book_development.json
 
+artistic_vision_task:
+  description: >
+    Create a visual representation of the novel's themes, characters, and settings.  This will be used to
+    guide the artist in creating illustrations.
+
+    The idea to expand upon:
+    {idea}
+  expected_output: >
+    A document that includes descriptions of the visual elements, including character designs, settings, and
+    color palettes.  This will be used to guide the artist in creating illustrations.
+  context:
+    - ideation_task
+  agent: art_director
+  output_file: output/artistic_vision.json
+
 act1_development_task:
   description: >
     Create a detailed outline of the first act of the novel, including character introductions, setting, and 

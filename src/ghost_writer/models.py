@@ -56,3 +56,14 @@ class Book(BaseModel):
     title: str
     author: str
     description: str
+
+class ArtisticVision(BaseModel):
+    """Artistic vision for the novel"""
+    genre: str
+    tone: str
+    style: str
+    themes: str
+    target_audience: str
+    visual_elements: str
+    color_palette: str
+    mood_board: str
