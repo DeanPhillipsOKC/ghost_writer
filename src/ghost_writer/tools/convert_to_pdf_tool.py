@@ -7,7 +7,7 @@ import os
 # Define the input schema
 class MarkdownToPDFInput(BaseModel):
     markdown_path: str = Field(..., description="Path to the input Markdown file.")
-    output_pdf_path: str = Field(..., description="Path where the output PDF will be saved.")
+    output_pdf_path: str = Field(..., description="Path where the output PDF will be saved. Relative paths are relative to the markdown_path directory.")
 
 # Define the custom tool
 class MarkdownToPDFTool(BaseTool):
@@ -19,9 +19,11 @@ class MarkdownToPDFTool(BaseTool):
         # Check if the markdown file exists
         if not os.path.exists(markdown_path):
             return f"Markdown file not found: {markdown_path}"
+        
+        os.chdir(os.path.dirname(markdown_path))
 
         # Read the markdown content
-        with open(markdown_path, 'r', encoding='utf-8') as f:
+        with open(os.path.basename(markdown_path), 'r', encoding='utf-8') as f:
             md_content = f.read()
 
         # Create a PDF with a table of contents up to level 2
