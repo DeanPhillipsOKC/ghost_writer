@@ -16,6 +16,7 @@ class GhostWriter():
 
     agents: List[BaseAgent]
     tasks: List[Task]
+    artistic_vision: str = None
 
     PAGE_BREAK = "<div style=\"page-break-after: always;\"></div>"
 
@@ -51,9 +52,23 @@ class GhostWriter():
         )
     
     @agent
+    def art_director(self) -> Agent:
+        return Agent(
+            config=self.agents_config['art_director'],
+            verbose=True
+        )
+    
+    @agent
     def outline_developer(self) -> Agent:
         return Agent(
             config=self.agents_config['outline_developer'],
+            verbose=True
+        )
+    
+    @agent
+    def artist(self) -> Agent:
+        return Agent(
+            config=self.agents_config['artist'],
             verbose=True
         )
     
@@ -123,7 +138,10 @@ class GhostWriter():
 
         illustrator_tool = IllustratorTool(filename=f'output/images/chapter_{self.chapter_number:02}.png')
         illustrator_tool.run(
-            prompt=f"Create an illustration for the chapter titled '{chapter.chapter_title}' with description '{chapter.chapter_description}.  IMPORTANT: Do not include any words, just an illustration.'")
+            prompt=f"Create an illustration for the chapter titled '{chapter.chapter_title}' with description \
+                '{chapter.chapter_description}.  IMPORTANT: Do not include any words, just an illustration.' \
+                    Here is some additional information from the art director that should be take into account: \
+                        {self.artistic_vision}.")
         
         TranscribeTool().run(content = f"![Chapter {self.chapter_number} Illustration](images/chapter_{self.chapter_number:02}.png)\n\n")
 
@@ -155,7 +173,9 @@ class GhostWriter():
 
         illustrator_tool = IllustratorTool(filename='output/images/cover.png', size='1024x1536')
         illustrator_tool.run(
-            prompt=f"Create a book cover for the book titled '{book.title}',  by author {book.author}, with description '{book.description}'")
+            prompt=f"Create a book cover for the book titled '{book.title}',  by author {book.author}, \
+                with description '{book.description}'.  Here is some additional information from the \
+                    art director that should be take into account: {self.artistic_vision}.")
         
         TranscribeTool().run(content = f"![Book Cover](images/cover.png)\n\n")
         TranscribeTool().run(content = f"# {book.title}\n*By {book.author}*\n\n")
@@ -166,6 +186,17 @@ class GhostWriter():
             config=self.tasks_config['book_development_task'],
             output_pydantic=Book,
             callback=self.on_book_created,
+        )
+
+    def on_artistic_vision_created(self, task_output):
+        self.artistic_vision = task_output.pydantic
+
+    @task
+    def artistic_vision_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['artistic_vision_task'],
+            output_pydantic=Book,
+            callback=self.on_artistic_vision_created,
         )
 
     @task
