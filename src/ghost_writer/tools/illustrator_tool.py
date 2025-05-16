@@ -1,9 +1,10 @@
+from pathlib import Path
+import base64
+import openai
+import os
 from typing import Type
 from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
-import openai
-import base64
-import os
 
 class IllustratorToolInput(BaseModel):
     prompt: str = Field(..., description="Text prompt for image generation.")
@@ -17,7 +18,7 @@ class IllustratorTool(BaseTool):
 
     def _run(self, prompt: str) -> str:
         try:
-            client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))  # Use the new client
+            client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
             response = client.images.generate(
                 model="gpt-image-1", 
                 prompt=prompt,
@@ -25,7 +26,10 @@ class IllustratorTool(BaseTool):
                 n=1,
             )
             image_data = response.data[0].b64_json
-            with open(self.filename, 'wb') as f:
+            # Ensure parent directory exists
+            out_path = Path(self.filename)
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(out_path, 'wb') as f:
                 f.write(base64.b64decode(image_data))
             return f"Image generated and saved to {self.filename}."
         except Exception as e:
