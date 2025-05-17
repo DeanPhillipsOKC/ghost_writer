@@ -1,3 +1,5 @@
+[![Python CI](https://github.com/DeanPhillipsOKC/ghost_writer/actions/workflows/python-ci.yml/badge.svg?branch=main)](https://github.com/DeanPhillipsOKC/ghost_writer/actions/workflows/python-ci.yml)
+
 # Ghost Writer
 
 **Ghost Writer** is a modular, multi-agent AI framework built on top of [crewAI](https://crewai.com). It enables the orchestration of multiple AI agents to collaboratively tackle complex tasks, maximizing efficiency and intelligence through structured collaboration.
