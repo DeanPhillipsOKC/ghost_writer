@@ -58,18 +58,27 @@ def test_write_act_calls_transcriber_and_increments_chapter(book_writer, mock_tr
 
     assert mock_transcriber.run.called
 
-def test_write_book_cover_runs_illustrator_and_transcriber(book_writer, mock_transcriber):
+def test_write_book_cover_runs_illustrator_and_transcriber(author_agent, mock_transcriber):
     book = Book(title="Test Title", author="Test Author", description="Test Description")
-    book_writer.set_artistic_vision("Impressionistic and symbolic")
 
     with patch("ghost_writer.services.book_writer_service.IllustratorTool") as MockTool:
         mock_instance = MockTool.return_value
+        book_writer = BookWriterService(
+            author_agent=author_agent,
+            transcriber=mock_transcriber,
+            illustrator=mock_instance,
+            disable_illustration=False,
+            output_path=Path("tmp")
+        )
+        book_writer.set_artistic_vision("Impressionistic and symbolic")
+
         book_writer.write_book_cover(book)
 
         mock_instance.run.assert_called_once()
         contents = [call.kwargs.get("content", "") for call in mock_transcriber.run.call_args_list]
         assert any("Test Title" in c for c in contents)
         assert any("![Book Cover]" in c for c in contents)
+
 
 def test_save_pdf_calls_pdf_tool(book_writer, mock_pdf_tool):
     book_writer.book_md_path.write_text("# Test Book\n\nSome content here.")
