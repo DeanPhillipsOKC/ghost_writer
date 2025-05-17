@@ -22,8 +22,8 @@ jobs:
     - name: Install uv
       run: pip install uv
 
-    - name: Install dependencies using uv
-      run: uv pip install --system .
+    - name: Install project with uv
+      run: uv pip install --system -e .
 
-    - name: Run tests
-      run: pytest --maxfail=1 --disable-warnings --no-header -q
+    - name: Run tests with local path
+      run: PYTHONPATH=src pytest --maxfail=1 --disable-warnings --no-header -q
