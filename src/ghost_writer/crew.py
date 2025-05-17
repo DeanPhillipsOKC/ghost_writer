@@ -19,7 +19,7 @@ class GhostWriter():
     tasks: List[Task]
     
     # A cost savings measure that is useful when testing and debugging
-    disable_illustration: bool = True
+    disable_illustration: bool = False
     
     chapter_number: int = 1
 

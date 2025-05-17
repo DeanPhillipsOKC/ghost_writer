@@ -22,8 +22,7 @@ def test_image_is_written(tmp_path):
         # Create a subfolder path for the output image
         output_file = tmp_path / "foo" / "bar.png"
         tool = IllustratorTool()
-        tool.filename = str(output_file)
-        result = tool._run("draw a cat")
+        result = tool._run("draw a cat", filename=str(output_file))
         
         assert output_file.exists()
         with open(output_file, "rb") as f:
@@ -35,6 +34,5 @@ def test_api_failure(tmp_path):
     with patch("ghost_writer.tools.illustrator_tool.openai.OpenAI") as MockOpenAI:
         MockOpenAI.return_value.images.generate.side_effect = Exception("fail!")
         tool = IllustratorTool()
-        tool.filename = str(tmp_path / "fail.png")
-        result = tool._run("draw a cat")
+        result = tool._run("draw a cat", filename=str(tmp_path / "fail.png"))
         assert "Failed to generate image" in result
