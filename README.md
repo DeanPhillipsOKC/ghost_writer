@@ -80,8 +80,9 @@ ghost_writer/
 │       ├── config/
 │       │   ├── agents.py
 │       │   └── tasks.py
-│       ├── tools/
-│       └── ...
+│       ├── services/
+│       └── tools/
+|       └── utils/
 ├── .env
 ├── pyproject.toml
 ├── uv.lock
