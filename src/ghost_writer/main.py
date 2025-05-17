@@ -47,8 +47,8 @@ def run():
 
     inputs = {
         'idea': idea,
-        'author': None,
-        'title': None
+        'author': 'Morgan Vale',
+        'title': 'Tactile Reveries: Meditations on Absence and Presence'
     }
     
     try:

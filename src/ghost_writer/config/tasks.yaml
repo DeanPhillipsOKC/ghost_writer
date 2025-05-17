@@ -73,6 +73,14 @@ act1_development_task:
       - Inciting Incident: A distruption to the protagonist's life that demands a response.
       - Plot Point 1 - A choice or event that propels the character into the main conflict or journey.
 
+    IMPORTANT: 
+      - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
+        descriptions, etc. should be creative and engaging.
+      - Never use colons in the outline as they might interfere with text generation processes. This includes
+        other characters like dashes when used as delimiting characters.
+      - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
+        be "Clay Memory-Fragments" instead.
+
     The idea to expand upon:
     {idea}
   expected_output: >
@@ -95,6 +103,14 @@ act2_development_task:
       - Personal Stakes Increase: The protagonist changes, or begins to.
       - Plot Point 2 - A major crisis or low point, usually a loss or betrayal
 
+    IMPORTANT: 
+      - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
+        descriptions, etc. should be creative and engaging.
+      - Never use colons in the outline as they might interfere with text generation processes. This includes
+        other characters like dashes when used as delimiting characters.
+      - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
+        be "Clay Memory-Fragments" instead.
+
     The idea to expand upon:
     {idea}
   expected_output: >
@@ -115,6 +131,14 @@ act3_development_task:
       - Climax: Final, most intense confrontation. The protagonist makes a key choice or sacrifice.
       - Denouement: Loose ends tied up. Reflect on meaning and change.
       - Final Image: A lasting impression that encapsulates the story’s arc or message.
+
+    IMPORTANT: 
+      - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
+        descriptions, etc. should be creative and engaging.
+      - Never use colons in the outline as they might interfere with text generation processes. This includes
+        other characters like dashes when used as delimiting characters.
+      - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
+        be "Clay Memory-Fragments" instead.
 
     The idea to expand upon:
     {idea}
