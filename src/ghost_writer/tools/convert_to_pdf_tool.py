@@ -2,34 +2,50 @@ from typing import Type
 from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 from markdown_pdf import MarkdownPdf, Section
+from pathlib import Path
+from contextlib import contextmanager
 import os
 
-# Define the input schema
+# Context manager for safe pushd/popd behavior
+@contextmanager
+def pushd(directory: Path):
+    prev_dir = Path.cwd()
+    os.chdir(directory)
+    print(f"Changed directory to: {directory}") 
+    try:
+        yield
+    finally:
+        os.chdir(prev_dir)
+        print(f"Returned to directory: {prev_dir}")
+
 class MarkdownToPDFInput(BaseModel):
     markdown_path: str = Field(..., description="Path to the input Markdown file.")
-    output_pdf_path: str = Field(..., description="Path where the output PDF will be saved. Relative paths are relative to the markdown_path directory.")
+    output_pdf_path: str = Field(..., description="Path where the output PDF will be saved.")
 
-# Define the custom tool
 class MarkdownToPDFTool(BaseTool):
     name: str = "Markdown to PDF Converter"
     description: str = "Converts a Markdown file into a PDF document."
     args_schema: Type[BaseModel] = MarkdownToPDFInput
 
     def _run(self, markdown_path: str, output_pdf_path: str) -> str:
-        # Check if the markdown file exists
-        if not os.path.exists(markdown_path):
-            return f"Markdown file not found: {markdown_path}"
-        
-        os.chdir(os.path.dirname(markdown_path))
+        md_path = Path(markdown_path).resolve()
+        out_path = Path(output_pdf_path).resolve()
+
+        if not md_path.exists():
+            return f"Markdown file not found: {md_path}"
 
         # Read the markdown content
-        with open(os.path.basename(markdown_path), 'r', encoding='utf-8') as f:
-            md_content = f.read()
+        md_content = md_path.read_text(encoding="utf-8")
 
-        # Create a PDF with a table of contents up to level 2
-        pdf = MarkdownPdf(toc_level=2)
-        pdf.add_section(Section(md_content))
-        pdf.meta["title"] = os.path.basename(markdown_path)
-        pdf.save(output_pdf_path)
+        # Safely switch working directory for image resolution
+        with pushd(md_path.parent):
+            pdf = MarkdownPdf(toc_level=0)
+            pdf.add_section(Section(md_content))
+            pdf.meta["title"] = md_path.stem
 
-        return f"PDF successfully created at: {output_pdf_path}"
+            # Create output directory if needed
+            out_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            pdf.save(str(out_path))
+
+        return f"PDF successfully created at: {out_path}"
