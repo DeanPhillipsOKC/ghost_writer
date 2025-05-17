@@ -21,8 +21,6 @@ class GhostWriter():
     # A cost savings measure that is useful when testing and debugging
     disable_illustration: bool = False
     
-    chapter_number: int = 1
-
     book_writer: BookWriterService = None
 
     @before_kickoff
