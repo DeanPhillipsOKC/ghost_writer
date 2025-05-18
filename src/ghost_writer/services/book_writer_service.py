@@ -1,4 +1,4 @@
-from ghost_writer.models import Act, Chapter, Scene, Book
+from ghost_writer.models import Act, Chapter, Book, Idea, Characters
 from ghost_writer.tools.convert_to_pdf_tool import MarkdownToPDFTool
 from ghost_writer.tools.transcribe_tool import TranscribeTool
 from ghost_writer.tools.illustrator_tool import IllustratorTool
@@ -69,14 +69,14 @@ class BookWriterService:
             output_pdf_path=str(self.book_pdf_path)
         )
 
-    def write_act(self, act: Act):
+    def write_act(self, act: Act, idea: Idea, characters: Characters):
         act_header = header_markdown(text=f"Act {act.act_number}: {act.act_title}", level=2)
         self.transcriber.run(content=act_header)
 
         for chapter in act.chapters:
-            self.__write_chapter(chapter, act)
+            self.__write_chapter(chapter, act, idea, characters)
 
-    def __write_chapter(self, chapter: Chapter, act: Act):
+    def __write_chapter(self, chapter: Chapter, act: Act, idea: Idea, characters: Characters):
         chapter_header = header_markdown(
             text=f"Chapter {self.chapter_number}: {chapter.chapter_title}", level=3
         )
@@ -94,7 +94,7 @@ class BookWriterService:
         self.chapter_number += 1
 
         for scene in chapter.scenes:
-            self.scene_writer.write_scene(scene, act, chapter)
+            self.scene_writer.write_scene(scene, act, chapter, idea, characters)
 
         self.transcriber.run(content=add_page_break())
 

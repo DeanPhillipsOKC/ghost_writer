@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 from pathlib import Path
 from ghost_writer.services.book_writer_service import BookWriterService
-from ghost_writer.models import Act, Chapter, Scene, Book
+from ghost_writer.models import Act, Chapter, Scene, Book, Idea, Characters
 from crewai import Agent
 
 @pytest.fixture
@@ -54,7 +54,30 @@ def test_write_act_calls_transcriber_and_increments_chapter(book_writer, mock_tr
     )
 
     with patch("crewai.Task.execute_sync", return_value=MagicMock(raw="Mocked paragraph text")):
-        book_writer.write_act(act)
+        book_writer.write_act(act, Idea(
+            premise="A story about friendship",
+            theme="Friendship",
+            characters="John Doe, Jane Smith",
+            plot_concepts="A journey of self-discovery",
+            tone_style="Light-hearted",
+            narrative_perspective="First-person",
+            symbolism="The journey represents life",
+            linquistic_constraints="Simple language",
+            inspirations="Inspired by real-life events",
+            core_philosophical_questions="What does it mean to be a friend?"), 
+            Characters(
+                characters=[{
+                    "name": "John Doe",
+                    "role": "Protagonist",
+                    "traits": "Brave and Determined",
+                    "backstory": "A young man from a small town",
+                    "motivations": "To find his place in the world",
+                    "flaws": "Impulsive and stubborn",
+                    "relationships": "Close friend of Jane Smith"
+                    }
+                ]
+            )
+        )
 
     assert mock_transcriber.run.called
 
