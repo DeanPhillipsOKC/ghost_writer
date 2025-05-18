@@ -3,10 +3,16 @@ from typing import List
 
 class Idea(BaseModel):
     """Idea for the novel"""
-    premise: str = Field(..., description="The premise of the novel")
-    theme: str = Field(..., description="The theme of the novel")
-    characters: str = Field(..., description="The main characters of the novel")
-    plot_concepts: str = Field(..., description="The plot concepts of the novel")
+    premise: str
+    theme: str
+    characters: str
+    plot_concepts: str
+    tone_style: str
+    narrative_perspective: str
+    symbolism: str
+    linquistic_constraints: str
+    inspirations: str
+    core_philosophical_questions: str
 
 class Plot(BaseModel):
     """Plot for the novel"""

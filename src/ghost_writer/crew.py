@@ -4,8 +4,7 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 
 from ghost_writer.models import Idea, Plot, Characters, Chapter, Act, Scene, Book, ArtisticVision
 from ghost_writer.services.book_writer_service import BookWriterService
-from ghost_writer.tools.transcribe_tool import TranscribeTool
-from ghost_writer.tools.illustrator_tool import IllustratorTool
+from ghost_writer.tools.convert_to_pdf_tool import MarkdownToPDFTool
 from ghost_writer.utils.filesystem_utils import purge_directory
 from ghost_writer.utils.markdown_utils import add_page_break, header_markdown, image_markdown
 
@@ -22,6 +21,8 @@ class GhostWriter():
     disable_illustration: bool = False
     
     book_writer: BookWriterService = None
+    book_idea: Idea = None
+    book_characters: Characters = None
 
     @before_kickoff
     def on_before_kickoff(self, inputs):
@@ -31,7 +32,11 @@ class GhostWriter():
         self.book_writer = BookWriterService(
             author_agent=self.author(),
             disable_illustration=self.disable_illustration)
-
+        
+        #MarkdownToPDFTool().run(
+        #    markdown_path="output/book_no_em_dashes.md",
+        #    output_pdf_path="output/book_no_em_dashes.pdf")
+        
         return inputs
 
     @agent
@@ -52,7 +57,7 @@ class GhostWriter():
     def character_developer(self) -> Agent:
         return Agent(
             config=self.agents_config['character_developer'],
-            verbose=True
+            verbose=True,
         )
     
     @agent
@@ -76,11 +81,26 @@ class GhostWriter():
             verbose=True
         )
 
+    def on_idea_created(self, task_output):
+        self.book_idea = task_output.pydantic
+
     @task
     def ideation_task(self) -> Task:
         return Task(
             config=self.tasks_config['ideation_task'],
             output_pydantic=Idea,
+            callback=self.on_idea_created
+        )
+    
+    def on_characters_developed(self, task_output):
+        self.book_characters = task_output.pydantic
+    
+    @task
+    def character_development_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['character_development_task'],
+            output_pydantic=Characters,
+            callback=self.on_characters_developed
         )
     
     @task
@@ -89,17 +109,10 @@ class GhostWriter():
             config=self.tasks_config['plot_development_task'],
             output_pydantic=Plot,
         )
-    
-    @task
-    def character_development_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['character_development_task'],
-            output_pydantic=Characters,
-        )
 
     def on_act_created(self, task_output):
         act = task_output.pydantic
-        self.book_writer.write_act(act)
+        self.book_writer.write_act(act, self.book_idea, self.book_characters)
         self.book_writer.save_pdf()
 
     def on_book_created(self, task_output):
