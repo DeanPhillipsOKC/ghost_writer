@@ -9,31 +9,27 @@ ideation_task:
   agent: idea_developer
   output_file: output/ideation.json
 
-plot_development_task:
-  description: >
-    Develop the plot structure of the novel, including rising action, climax, falling action, and resolution.
-
-    The idea to expand upon:
-    {idea}
-  expected_output: >
-    A detailed plot outline that includes the main events and character arcs.
-  context:
-    - ideation_task
-  agent: plot_developer
-  output_file: output/plot_development.json
-
 character_development_task:
   description: >
     Create multi-dimensional characters with emotional arcs that resonate with readers.
 
-    The idea to expand upon:
-    {idea}
   expected_output: >
     A character profile document that includes character backgrounds, motivations, and emotional arcs.
   context:
     - ideation_task
   agent: character_developer
   output_file: output/character_development.json
+
+plot_development_task:
+  description: >
+    Develop the plot structure of the novel, including rising action, climax, falling action, and resolution.
+  expected_output: >
+    A detailed plot outline that includes the main events and character arcs.
+  context:
+    - ideation_task
+    - character_development_task
+  agent: plot_developer
+  output_file: output/plot_development.json
 
 book_development_task:
   description: >
@@ -44,6 +40,8 @@ book_development_task:
     Title: {title}
   expected_output: >
     Info about the book
+  context:
+    - ideation_task
   agent: author
   output_file: output/book_development.json
 
@@ -51,9 +49,6 @@ artistic_vision_task:
   description: >
     Create a visual representation of the novel's themes, characters, and settings.  This will be used to
     guide the artist in creating illustrations.
-
-    The idea to expand upon:
-    {idea}
   expected_output: >
     A document that includes descriptions of the visual elements, including character designs, settings, and
     color palettes.  This will be used to guide the artist in creating illustrations.
@@ -80,15 +75,11 @@ act1_development_task:
         other characters like dashes when used as delimiting characters.
       - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
         be "Clay Memory-Fragments" instead.
-
-    The idea to expand upon:
-    {idea}
   expected_output: >
     A comprehensive outline document that can be used to write the first act of the novel.
   context:
     - ideation_task
     - plot_development_task
-    - character_development_task
   agent: outline_developer
   output_file: output/act1_development.json
 
@@ -110,15 +101,11 @@ act2_development_task:
         other characters like dashes when used as delimiting characters.
       - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
         be "Clay Memory-Fragments" instead.
-
-    The idea to expand upon:
-    {idea}
   expected_output: >
     A comprehensive outline document that can be used to write the second act of the novel.
   context:
     - ideation_task
     - plot_development_task
-    - character_development_task
   agent: outline_developer
   output_file: output/act2_development.json
 
@@ -139,14 +126,10 @@ act3_development_task:
         other characters like dashes when used as delimiting characters.
       - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
         be "Clay Memory-Fragments" instead.
-
-    The idea to expand upon:
-    {idea}
   expected_output: >
     A comprehensive outline document that can be used to write the third act of the novel.
   context:
     - ideation_task
     - plot_development_task
-    - character_development_task
   agent: outline_developer
   output_file: output/act3_development.json
