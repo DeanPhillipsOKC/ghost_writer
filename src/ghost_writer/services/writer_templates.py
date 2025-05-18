@@ -1,6 +1,6 @@
-from ghost_writer.models import Scene, Act, Chapter, Book
+from ghost_writer.models import Scene, Act, Chapter, Book, Idea, Characters
 
-def get_scene_task_prompt(scene: Scene, act: Act, chapter: Chapter) -> str:
+def get_scene_task_prompt(scene: Scene, act: Act, chapter: Chapter, idea: Idea, characters: Characters) -> str:
     """
     Generates a task prompt for writing a scene based on the provided scene, act, and chapter details.
     
@@ -14,14 +14,12 @@ def get_scene_task_prompt(scene: Scene, act: Act, chapter: Chapter) -> str:
     """
     return f"""
         Write the scene for the novel with the following plot elements and characters:
-        Plot: {scene.scene_plot}
-        Characters: {scene.characters}
-
-        Act description: {act.act_description}
-        Act plot: {act.act_plot}
-        Chapter description: {chapter.chapter_description}
-        Chapter plot: {chapter.chapter_plot}
-        Overall novel idea: {{idea}}
+        Scene Plot: {scene.scene_plot}
+        Scene Characters: {scene.characters}
+        
+        Idea: {idea.model_dump_json()}
+        
+        Character Info: {characters.model_dump_json()}
 
         Important:
         - Do not use any headings, just paragraphs.
