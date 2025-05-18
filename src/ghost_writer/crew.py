@@ -105,7 +105,8 @@ class GhostWriter():
     def on_book_created(self, task_output):
         book = task_output.pydantic
 
-        self.book_writer.write_book_cover(book)
+        self.book_writer.write_book_intro(book)
+        self.book_writer.save_pdf()
 
     @task
     def book_development_task(self) -> Task:

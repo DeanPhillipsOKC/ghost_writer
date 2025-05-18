@@ -55,6 +55,10 @@ class Act(BaseModel):
 class Book(BaseModel):
     title: str = Field(..., description="The title of the book")
     author: str = Field(..., description="The author of the book")
+    epigraph: str = Field(..., description="The epigraph of the book.  A short, meaningful quote from the author that engages the reader.  Do not attribute the quote (just display the quote).")
+    preface: str = Field(..., description="The preface of the book.  A short introduction to the book that sets the stage for the story.")
+    authors_note: str = Field(..., description="The author's notes.  A short note from the author to the reader.")
+    genre: str = Field(..., description="The genre of the book, e.g., 'Fantasy'")
     description: str = Field(..., description="A brief description of the book")
 
 class ArtisticVision(BaseModel):

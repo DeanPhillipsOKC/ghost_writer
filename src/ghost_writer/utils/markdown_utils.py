@@ -63,3 +63,23 @@ def code_block_markdown(code: str, language: str = "") -> str:
         str: Markdown code block.
     """
     return f"```{language}\n{code}\n```\n\n"
+
+def quote_block_markdown(text: str, author: str) -> str:
+    """
+    Converts a multi-paragraph quote into a properly formatted Markdown blockquote.
+
+    Args:
+        text (str): The quoted text. Can contain multiple paragraphs separated by line breaks.
+        author (str): The author of the quote.
+
+    Returns:
+        str: A Markdown-formatted blockquote.
+    """
+    # Normalize line endings and split into paragraphs
+    paragraphs = [p.strip() for p in text.strip().split("\n\n") if p.strip()]
+
+    # Format each paragraph as a blockquote
+    quoted_paragraphs = "\n\n".join(f"> {p.replace('\n', '\n> ')}" for p in paragraphs)
+
+    # Append author attribution
+    return f"{quoted_paragraphs}\n>\n> — *{author}*"

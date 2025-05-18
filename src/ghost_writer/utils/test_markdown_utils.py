@@ -41,3 +41,24 @@ def test_write_markdown(tmp_path):
         lines = f.readlines()
         assert lines[0] == "# Title\n"
         assert lines[-1] == "Another line\n"
+        
+def test_quote_block_markdown():
+    text = (
+        "First paragraph of the quote.\n"
+        "It continues here.\n\n"
+        "Second paragraph follows.\n"
+        "It also spans multiple lines."
+    )
+    author = "Test Author"
+
+    result = md_utils.quote_block_markdown(text, author)
+
+    # Check each paragraph is blockquoted correctly
+    assert "> First paragraph of the quote." in result
+    assert "> It continues here." in result
+    assert "> Second paragraph follows." in result
+    assert "> It also spans multiple lines." in result
+
+    # Check author attribution
+    assert result.strip().endswith(f"> — *{author}*")
+
