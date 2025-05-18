@@ -64,3 +64,22 @@ def get_book_cover_illustration_prompt(book_info: Book, artistic_vision: str) ->
         with description '{book_info.description}'. Here is some additional information from the
         art director: {artistic_vision}.
     """
+    
+def get_book_frontispiece_illustration_prompt(book_info: Book, artistic_vision: str) -> str:
+    """
+    Generates a prompt for illustrating a book frontispiece based on the provided book information.
+    
+    Args:
+        book_info (Book): The book object containing details about the book.
+        artistic_vision (str): The artistic vision for the illustration.
+    
+    Returns:
+        str: The generated illustration prompt.
+    """
+    return f"""
+        Create a frontispiece for the book with description '{book_info.description}'. 
+        
+        IMPORTANT: Do not use words.  Just an illustration.
+        
+        Here is some additional information from the art director: {artistic_vision}.
+    """

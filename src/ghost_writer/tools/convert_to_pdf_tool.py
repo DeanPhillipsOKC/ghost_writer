@@ -39,7 +39,7 @@ class MarkdownToPDFTool(BaseTool):
 
         # Safely switch working directory for image resolution
         with pushd(md_path.parent):
-            pdf = MarkdownPdf(toc_level=0)
+            pdf = MarkdownPdf(toc_level=3)
             pdf.add_section(Section(md_content))
             pdf.meta["title"] = md_path.stem
 
