@@ -22,7 +22,12 @@ def author_agent():
     return Agent(config={"name": "Test Author", "role": "Writes scenes", "goal": "goal", "backstory": "backstory"}, verbose=False)
 
 @pytest.fixture
-def book_writer(tmp_path, author_agent, mock_transcriber, mock_illustrator, mock_pdf_tool):
+def book_writer(
+        tmp_path, 
+        author_agent, 
+        mock_transcriber, 
+        mock_illustrator, 
+        mock_pdf_tool):
     return BookWriterService(
         author_agent=author_agent,
         transcriber=mock_transcriber,
@@ -81,7 +86,9 @@ def test_write_act_calls_transcriber_and_increments_chapter(book_writer, mock_tr
 
     assert mock_transcriber.run.called
 
-def test_write_book_cover_runs_illustrator_and_transcriber(author_agent, mock_transcriber):
+def test_write_book_cover_runs_illustrator_and_transcriber(
+        author_agent, 
+        mock_transcriber):
     book = Book(title="Test Title", author="Test Author", description="Test Description", epigraph="Test Epigraph", preface="Test Preface", authors_note="Test Notes", genre="test")
 
     with patch("ghost_writer.services.book_writer_service.IllustratorTool") as MockTool:

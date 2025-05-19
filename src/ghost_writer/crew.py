@@ -2,11 +2,10 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task, before_kickoff
 from crewai.agents.agent_builder.base_agent import BaseAgent
 
-from ghost_writer.models import Idea, Plot, Characters, Chapter, Act, Scene, Book, ArtisticVision
+from ghost_writer.models import Idea, Plot, Characters, Act, Book, ArtisticVision, SubPlots
 from ghost_writer.services.book_writer_service import BookWriterService
 from ghost_writer.tools.convert_to_pdf_tool import MarkdownToPDFTool
 from ghost_writer.utils.filesystem_utils import purge_directory
-from ghost_writer.utils.markdown_utils import add_page_break, header_markdown, image_markdown
 
 from typing import List
 
@@ -33,9 +32,9 @@ class GhostWriter():
             author_agent=self.author(),
             disable_illustration=self.disable_illustration)
         
-        #MarkdownToPDFTool().run(
-        #    markdown_path="output/book_no_em_dashes.md",
-        #    output_pdf_path="output/book_no_em_dashes.pdf")
+       # MarkdownToPDFTool().run(
+       #     markdown_path="output/book_finetuned.md",
+       #     output_pdf_path="output/tactile_reveries_2_2nd_draft.pdf")
         
         return inputs
 
@@ -108,6 +107,13 @@ class GhostWriter():
         return Task(
             config=self.tasks_config['plot_development_task'],
             output_pydantic=Plot,
+        )
+        
+    @task
+    def sublots_development_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['sublots_development_task'],
+            output_pydantic=SubPlots,
         )
 
     def on_act_created(self, task_output):
