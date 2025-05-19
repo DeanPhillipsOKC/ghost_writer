@@ -22,6 +22,20 @@ class Plot(BaseModel):
     falling_action: str = Field(..., description="The falling action of the plot")
     resolution: str = Field(..., description="The resolution of the plot")
 
+class SubPlot(BaseModel):
+    """Subplot for the novel"""
+    description: str = Field(..., description="A brief description of the subplot")
+    rising_action: str = Field(..., description="The rising action of the subplot")
+    climax: str = Field(..., description="The climax of the subplot")
+    falling_action: str = Field(..., description="The falling action of the subplot")
+    resolution: str = Field(..., description="The resolution of the subplot")
+    connection_to_main_plot: str = Field(..., description="The connection of the subplot to the main plot")
+    connection_to_character_arc: str = Field(..., description="The connection of the subplot to the character arc")
+
+class SubPlots(BaseModel):
+    """Subplots for the novel"""
+    subplots: List[SubPlot] = Field(..., description="List of subplots in the novel")
+
 class Character(BaseModel):
     """Character for the novel"""
     name: str = Field(..., description="The name of the character")

@@ -17,7 +17,7 @@ class NullIllustrator:
 class BookWriterService:
     def __init__(
         self, 
-        author_agent, 
+        author_agent,
         transcriber=None, 
         illustrator=None, 
         disable_illustration=False, 
