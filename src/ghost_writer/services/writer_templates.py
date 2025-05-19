@@ -24,8 +24,11 @@ def get_scene_task_prompt(scene: Scene, act: Act, chapter: Chapter, idea: Idea, 
         Important:
         - Do not use any headings, just paragraphs.
         - Do not use em dashes.
+        - For exposition / setup scenes use 800 to 1000 words.
+        - For rising action scenes use 1200 to 2000 words.
+        - For clmiactic confrontation scenes use at least 2000 words.
     """
-    
+
 def get_chapter_illustration_prompt(chapter: Chapter, artistic_vision: str) -> str:
     """
     Generates a prompt for illustrating a chapter based on the provided chapter details.

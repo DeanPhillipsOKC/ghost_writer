@@ -31,6 +31,19 @@ plot_development_task:
   agent: plot_developer
   output_file: output/plot_development.json
 
+sublots_development_task:
+  description: >
+    Create subplots that enhance the main plot and character arcs.  These should be interwoven with the
+    main plot and add depth to the story.
+  expected_output: >
+    A document that outlines the subplots, including their connections to the main plot and character arcs.
+  context:
+    - ideation_task
+    - character_development_task
+    - plot_development_task
+  agent: plot_developer
+  output_file: output/sublots_development.json
+
 book_development_task:
   description: >
     If they are not already provided, come up with a title, and author for the book.  Get creative
@@ -76,10 +89,12 @@ act1_development_task:
       - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
         be "Clay Memory-Fragments" instead.
   expected_output: >
-    A comprehensive outline document that can be used to write the first act of the novel.
+    A comprehensive outline document that can be used to write the first act of the novel.  The act should
+    consist of 5-7 chapters, each with 2-4 scenes.  Make sure to work the main and sublots into the outline.
   context:
     - ideation_task
     - plot_development_task
+    - sublots_development_task
   agent: outline_developer
   output_file: output/act1_development.json
 
@@ -102,10 +117,12 @@ act2_development_task:
       - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
         be "Clay Memory-Fragments" instead.
   expected_output: >
-    A comprehensive outline document that can be used to write the second act of the novel.
+    A comprehensive outline document that can be used to write the second act of the novel.  The act should
+    consist of 10-14 chapters, each with 2-4 scenes.  Make sure to work the main and sublots into the outline.
   context:
     - ideation_task
     - plot_development_task
+    - sublots_development_task
   agent: outline_developer
   output_file: output/act2_development.json
 
@@ -127,9 +144,11 @@ act3_development_task:
       - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
         be "Clay Memory-Fragments" instead.
   expected_output: >
-    A comprehensive outline document that can be used to write the third act of the novel.
+    A comprehensive outline document that can be used to write the third act of the novel.  The act should
+    consist of 5-7 chapters, each with 2-4 scenes.  Make sure to work the main and sublots into the outline.
   context:
     - ideation_task
     - plot_development_task
+    - sublots_development_task
   agent: outline_developer
   output_file: output/act3_development.json
