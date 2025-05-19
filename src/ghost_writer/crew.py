@@ -26,15 +26,15 @@ class GhostWriter():
     @before_kickoff
     def on_before_kickoff(self, inputs):
         # Delete the output directory if it exists
-        # purge_directory('output')
+        purge_directory('output')
 
         self.book_writer = BookWriterService(
             author_agent=self.author(),
             disable_illustration=self.disable_illustration)
         
-        MarkdownToPDFTool().run(
-            markdown_path="output/book_finetuned.md",
-            output_pdf_path="output/tactile_reveries_2_2nd_draft.pdf")
+       # MarkdownToPDFTool().run(
+       #     markdown_path="output/book_finetuned.md",
+       #     output_pdf_path="output/tactile_reveries_2_2nd_draft.pdf")
         
         return inputs
 
