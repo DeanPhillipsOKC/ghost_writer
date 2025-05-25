@@ -22,27 +22,115 @@ character_development_task:
 
 plot_development_task:
   description: >
-    Develop the plot structure of the novel, including rising action, climax, falling action, and resolution.
+    Develop the plot structure of the novel, ensuring a dynamic tension curve with emotional highs and lows.
+    
+    The plot should NOT follow a purely linear build. Instead, alternate between building tension and releasing it
+    with unexpected turns, emotional reversals, false victories, and moments of reflection.
+
+    Use a modified version of Freytag’s Pyramid:
+      - Begin with a compelling inciting incident.
+      - Build tension through multiple arcs, not a straight incline.
+      - Include a midpoint twist that reorients the narrative.
+      - Place the climax ~80-90% into the story.
+      - After the climax, resolve character and thematic threads.
+
+    Make sure the protagonist faces escalating emotional and philosophical challenges, not just external events.
+
   expected_output: >
-    A detailed plot outline that includes the main events and character arcs.
+    A detailed plot outline that includes:
+      - Description
+      - Non-linear rising action with 2-3 peaks and dips
+      - Midpoint reversal
+      - Climactic sequence
+      - Thematic and emotional resolution
+
   context:
     - ideation_task
     - character_development_task
   agent: plot_developer
   output_file: output/plot_development.json
 
-sublots_development_task:
+subplots_development_task:
   description: >
-    Create subplots that enhance the main plot and character arcs.  These should be interwoven with the
-    main plot and add depth to the story.
+    Create subplots that enhance the main plot and character arcs. These should introduce their own mini-arcs of
+    tension and resolution, with intentional variation in pace and emotional stakes.
+
+    Each subplot should:
+      - Have its own emotional rhythm, not mirror the main plot's curve.
+      - Introduce challenges that resonate thematically but offer tonal or pacing contrast.
+      - Rise, peak, and resolve asynchronously with the main plot.
+      - Optionally, offer a reversal or betrayal point before resolution.
+
   expected_output: >
-    A document that outlines the subplots, including their connections to the main plot and character arcs.
+    A document that outlines each subplot including:
+      - Description
+      - Tension rhythm (e.g., slow rise, abrupt spike, slow decline)
+      - A distinct climax (not aligned with the main plot's)
+      - Connection to character arc and thematic layer
   context:
     - ideation_task
     - character_development_task
     - plot_development_task
   agent: plot_developer
-  output_file: output/sublots_development.json
+  output_file: output/subplots_development.json
+
+plot_review_task:
+  description: >
+    Critically evaluate the plot outline.  Point out pacing gaps, weak turning points, theme drift, and under-served character arcs.  Provide numbered notes, each with a clear recommendation.
+  expected_output: >
+    A numbered list of concrete revision notes
+
+    Return your feedback in the following format:
+
+    1. Must-fix - [Description of the issue]
+    2. Suggestion - [Description of the issue]
+  context:
+    - plot_development_task
+    - character_development_task
+  agent: plot_reviewer
+  output_file: output/plot_review.json
+
+subplots_review_task:
+  description: >
+    Critically evaluate the subplot outline.  Point out pacing gaps, weak turning points, theme drift, and 
+    under-served character arcs.  Provide numbered notes, each with a clear recommendation.
+
+    Review each subplot separately.  Prefix every note with the subplot id
+    so the developer knows which one to update.
+  expected_output: >
+    A numbered list of concrete revision notes
+
+    Return your feedback in the following format:
+
+    1. [subplot id] - Must-fix - [Description of the issue]
+    2. [subplot id] - Suggestion - [Description of the issue]
+  context:
+    - subplots_development_task
+    - character_development_task
+  agent: plot_reviewer
+  output_file: output/plot_review.json
+
+plot_revision_task:
+  description: >
+    Revise the plot outline based on the review notes.  Address every note explicitly.  Produce a clean, updated outline.
+  expected_output: >
+    An updated plot outline that integrates all accepted changes
+  context:
+    - plot_development_task
+    - plot_review_task
+  agent: plot_developer
+  output_file: output/plot_development_revised.json
+
+subplots_revision_task:
+  description: >
+    Revise the subplot outline based on the review notes.  Address every note explicitly.  Produce a clean, updated outline.
+  expected_output: >
+    An updated plot outline that integrates all accepted changes
+  context:
+    - subplots_development_task
+    - subplots_review_task
+  agent: plot_developer
+  output_file: output/subplots_development_revised.json
 
 book_development_task:
   description: >
@@ -90,13 +178,49 @@ act1_development_task:
         be "Clay Memory-Fragments" instead.
   expected_output: >
     A comprehensive outline document that can be used to write the first act of the novel.  The act should
-    consist of 5-7 chapters, each with 2-4 scenes.  Make sure to work the main and sublots into the outline.
+    consist of 5-7 chapters, each with 2-4 scenes.  Make sure to work the main and subplots into the outline.
   context:
     - ideation_task
-    - plot_development_task
-    - sublots_development_task
+    - plot_revision_task
+    - subplots_revision_task
   agent: outline_developer
   output_file: output/act1_development.json
+
+act1_review_task:
+  description: >
+    Review the Act One outline.  Flag slow openings, missing hooks, or unclear stakes.  Provide numbered notes.
+  expected_output: >
+    A numbered list of revision notes
+
+    Return your feedback in the following format:
+
+    1. Must-fix - [Description of the issue]
+    2. Suggestion - [Description of the issue]
+  context:
+    - act1_development_task
+    - plot_revision_task
+    - character_development_task
+  agent: plot_reviewer
+  output_file: output/act1_review.json
+
+act1_revision_task:
+  description: >
+    Revise Act One according to the notes.  Ensure changes are fully applied.
+
+    IMPORTANT: 
+      - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
+        descriptions, etc. should be creative and engaging.
+      - Never use colons in the outline as they might interfere with text generation processes. This includes
+        other characters like dashes when used as delimiting characters.
+      - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
+        be "Clay Memory-Fragments" instead.
+  expected_output: >
+    A clean, updated Act One outline. The act should consist of 5-7 chapters, each with 2-4 scenes.
+  context:
+    - act1_development_task
+    - act1_review_task
+  agent: outline_developer
+  output_file: output/act1_development_revised.json
 
 act2_development_task:
   description: >
@@ -118,13 +242,49 @@ act2_development_task:
         be "Clay Memory-Fragments" instead.
   expected_output: >
     A comprehensive outline document that can be used to write the second act of the novel.  The act should
-    consist of 10-14 chapters, each with 2-4 scenes.  Make sure to work the main and sublots into the outline.
+    consist of 10-14 chapters, each with 2-4 scenes.  Make sure to work the main and subplots into the outline.
   context:
     - ideation_task
-    - plot_development_task
-    - sublots_development_task
+    - plot_revision_task
+    - subplots_revision_task
   agent: outline_developer
   output_file: output/act2_development.json
+
+act2_review_task:
+  description: >
+    Review the Act Two outline.  Flag slow openings, missing hooks, or unclear stakes.  Provide numbered notes.
+  expected_output: >
+    A numbered list of revision notes
+
+    Return your feedback in the following format:
+
+    1. Must-fix - [Description of the issue]
+    2. Suggestion - [Description of the issue]
+  context:
+    - act2_development_task
+    - plot_revision_task
+    - character_development_task
+  agent: plot_reviewer
+  output_file: output/act2_review.json
+
+act2_revision_task:
+  description: >
+    Revise Act Two according to the notes.  Ensure changes are fully applied.
+
+    IMPORTANT: 
+      - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
+        descriptions, etc. should be creative and engaging.
+      - Never use colons in the outline as they might interfere with text generation processes. This includes
+        other characters like dashes when used as delimiting characters.
+      - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
+        be "Clay Memory-Fragments" instead.
+  expected_output: >
+    A clean, updated Act Two outline. The act should consist of 10-14 chapters, each with 2-4 scenes. 
+  context:
+    - act2_development_task
+    - act2_review_task
+  agent: outline_developer
+  output_file: output/act2_development_revised.json
 
 act3_development_task:
   description: >
@@ -145,10 +305,46 @@ act3_development_task:
         be "Clay Memory-Fragments" instead.
   expected_output: >
     A comprehensive outline document that can be used to write the third act of the novel.  The act should
-    consist of 5-7 chapters, each with 2-4 scenes.  Make sure to work the main and sublots into the outline.
+    consist of 5-7 chapters, each with 2-4 scenes.  Make sure to work the main and subplots into the outline.
   context:
     - ideation_task
-    - plot_development_task
-    - sublots_development_task
+    - plot_revision_task
+    - subplots_revision_task
   agent: outline_developer
   output_file: output/act3_development.json
+
+act3_review_task:
+  description: >
+    Review the Act Three outline.  Flag slow openings, missing hooks, or unclear stakes.  Provide numbered notes.
+  expected_output: >
+    A numbered list of revision notes
+
+    Return your feedback in the following format:
+
+    1. Must-fix - [Description of the issue]
+    2. Suggestion - [Description of the issue]
+  context:
+    - act3_development_task
+    - plot_revision_task
+    - character_development_task
+  agent: plot_reviewer
+  output_file: output/act3_review.json
+
+act3_revision_task:
+  description: >
+    Revise Act Three according to the notes.  Ensure changes are fully applied.
+
+    IMPORTANT: 
+      - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
+        descriptions, etc. should be creative and engaging.
+      - Never use colons in the outline as they might interfere with text generation processes. This includes
+        other characters like dashes when used as delimiting characters.
+      - Never use numbering in the outline titles.  For example "Chaapter 6: Clay Memory-Fragments" should
+        be "Clay Memory-Fragments" instead.
+  expected_output: >
+    A clean, updated Act One outline.  The act should consist of 5-7 chapters, each with 2-4 scenes.
+  context:
+    - act3_development_task
+    - act3_review_task
+  agent: outline_developer
+  output_file: output/act1_development_revised.json

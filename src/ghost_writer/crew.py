@@ -53,6 +53,13 @@ class GhostWriter():
         )
     
     @agent
+    def plot_reviewer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['plot_reviewer'], 
+            verbose=True
+        )
+    
+    @agent
     def character_developer(self) -> Agent:
         return Agent(
             config=self.agents_config['character_developer'],
@@ -110,9 +117,35 @@ class GhostWriter():
         )
         
     @task
-    def sublots_development_task(self) -> Task:
+    def subplots_development_task(self) -> Task:
         return Task(
-            config=self.tasks_config['sublots_development_task'],
+            config=self.tasks_config['subplots_development_task'],
+            output_pydantic=SubPlots,
+        )
+        
+    @task
+    def plot_review_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['plot_review_task'],
+        )
+        
+    @task
+    def subplots_review_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['subplots_review_task'],
+        )
+        
+    @task
+    def plot_revision_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['plot_revision_task'],
+            output_pydantic=Plot,
+        )
+        
+    @task
+    def subplots_revision_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['subplots_revision_task'],
             output_pydantic=SubPlots,
         )
 
@@ -152,6 +185,19 @@ class GhostWriter():
         return Task(
             config=self.tasks_config['act1_development_task'],
             output_pydantic=Act,
+        )
+    
+    @task
+    def act1_review_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['act1_review_task'],
+        )
+        
+    @task
+    def act1_revision_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['act1_revision_task'],
+            output_pydantic=Act,
             callback=self.on_act_created,
         )
     
@@ -160,6 +206,19 @@ class GhostWriter():
         return Task(
             config=self.tasks_config['act2_development_task'],
             output_pydantic=Act,
+        )
+    
+    @task
+    def act2_review_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['act2_review_task'],
+        )
+        
+    @task
+    def act2_revision_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['act2_revision_task'],
+            output_pydantic=Act,
             callback=self.on_act_created,
         )
     
@@ -167,6 +226,19 @@ class GhostWriter():
     def act3_development_task(self) -> Task:
         return Task(
             config=self.tasks_config['act3_development_task'],
+            output_pydantic=Act,
+        )
+        
+    @task
+    def act3_review_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['act3_review_task'],
+        )
+        
+    @task
+    def act3_revision_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['act3_revision_task'],
             output_pydantic=Act,
             callback=self.on_act_created,
         )

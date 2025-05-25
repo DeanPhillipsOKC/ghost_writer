@@ -21,9 +21,11 @@ class Plot(BaseModel):
     climax: str = Field(..., description="The climax of the plot")
     falling_action: str = Field(..., description="The falling action of the plot")
     resolution: str = Field(..., description="The resolution of the plot")
+    tension_profile: List[float] = Field(..., description="Normalized tension values (0-1) at each major beat")
 
 class SubPlot(BaseModel):
     """Subplot for the novel"""
+    id: str = Field(..., description="A unique identifier for the subplot")
     description: str = Field(..., description="A brief description of the subplot")
     rising_action: str = Field(..., description="The rising action of the subplot")
     climax: str = Field(..., description="The climax of the subplot")
@@ -31,6 +33,7 @@ class SubPlot(BaseModel):
     resolution: str = Field(..., description="The resolution of the subplot")
     connection_to_main_plot: str = Field(..., description="The connection of the subplot to the main plot")
     connection_to_character_arc: str = Field(..., description="The connection of the subplot to the character arc")
+    tension_profile: List[float] = Field(..., description="Normalized tension values (0-1) at each major beat")
 
 class SubPlots(BaseModel):
     """Subplots for the novel"""

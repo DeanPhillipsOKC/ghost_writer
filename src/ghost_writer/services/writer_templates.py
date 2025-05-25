@@ -14,12 +14,11 @@ def get_scene_task_prompt(scene: Scene, act: Act, chapter: Chapter, idea: Idea, 
     """
     return f"""
         Write the scene for the novel with the following plot elements and characters:
-        Scene Plot: {scene.scene_plot}
-        Scene Characters: {scene.characters}
+        Scene Information:\n{scene.model_dump_json()}
         
-        Idea: {idea.model_dump_json()}
+        Overall Book Idea For context:\n{idea.model_dump_json()}
         
-        Character Info: {characters.model_dump_json()}
+        Character Info for context:\n{characters.model_dump_json()}
 
         Important:
         - Do not use any headings, just paragraphs.
