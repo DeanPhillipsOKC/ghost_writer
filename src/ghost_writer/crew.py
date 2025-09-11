@@ -26,7 +26,7 @@ class GhostWriter():
     @before_kickoff
     def on_before_kickoff(self, inputs):
         # Delete the output directory if it exists
-        purge_directory('output')
+        # purge_directory('output')
 
         self.book_writer = BookWriterService(
             author_agent=self.author(),
@@ -178,5 +178,5 @@ class GhostWriter():
             tasks=self.tasks, 
             process=Process.sequential,
             verbose=True,
-            memory=True
+            memory=False
         )
