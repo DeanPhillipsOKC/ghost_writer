@@ -12,7 +12,6 @@ ideation_task:
 character_development_task:
   description: >
     Create multi-dimensional characters with emotional arcs that resonate with readers.
-
   expected_output: >
     A character profile document that includes character backgrounds, motivations, and emotional arcs.
   context:

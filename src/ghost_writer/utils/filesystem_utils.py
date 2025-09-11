@@ -9,3 +9,7 @@ def purge_directory(path: str):
     if p.exists():
         shutil.rmtree(p)
     p.mkdir(parents=True, exist_ok=True)
+
+def file_exists(path: str):
+    p = Path(path)
+    return p.exists()
