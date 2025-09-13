@@ -49,6 +49,9 @@ sublots_development_task:
     
     Character Development (if blank, additional context will be provided in this prompt from the character
     development task): {character_development}
+
+    Plot Development (if blank, additional context will be provided in this prompt from the plot development
+    task): {plot_development}
   expected_output: >
     A document that outlines the subplots, including their connections to the main plot and character arcs.
   context:
@@ -104,6 +107,12 @@ act1_development_task:
     Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
     {ideation}
 
+    Plot Development (if blank, additional context will be provided in this prompt from the plot development
+    task): {plot_development}
+
+    Subplots Development (if blank, additional context will be provided in this prompt from the sublots development
+    task): {sublots_development}
+
     IMPORTANT: 
       - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
         descriptions, etc. should be creative and engaging.
@@ -135,6 +144,12 @@ act2_development_task:
     Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
     {ideation}
 
+    Plot Development (if blank, additional context will be provided in this prompt from the plot development
+    task): {plot_development}
+
+    Subplots Development (if blank, additional context will be provided in this prompt from the sublots development
+    task): {sublots_development}
+
     IMPORTANT: 
       - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
         descriptions, etc. should be creative and engaging.
@@ -164,6 +179,12 @@ act3_development_task:
 
     Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
     {ideation}
+
+    Plot Development (if blank, additional context will be provided in this prompt from the plot development
+    task): {plot_development}
+
+    Subplots Development (if blank, additional context will be provided in this prompt from the sublots development
+    task): {sublots_development}
 
     IMPORTANT: 
       - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
