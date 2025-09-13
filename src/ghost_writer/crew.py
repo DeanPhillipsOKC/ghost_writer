@@ -44,6 +44,9 @@ class GhostWriter():
         if file_exists('output/sublots_development.json'):
             inputs["sublots_development"] = get_json('output/sublots_development.json')
 
+        if file_exists('output/artistic_vision.json'):
+            inputs["artistic_vision"] = get_json('output/artistic_vision.json')
+
        # MarkdownToPDFTool().run(
        #     markdown_path="output/book_finetuned.md",
        #     output_pdf_path="output/tactile_reveries_2_2nd_draft.pdf")
