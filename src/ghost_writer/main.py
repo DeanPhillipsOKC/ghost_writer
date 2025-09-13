@@ -62,6 +62,9 @@ def run():
         if file_exists("output/sublots_development.json"):
             crew.tasks = [t for t in crew.tasks if t.name != "sublots_development_task"]
 
+        if file_exists({"output/artistic_vision.json"}):
+            crew.tasks = [t for t in crew.tasks if t.name != "artistic_vision_task"]
+
         crew.kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
