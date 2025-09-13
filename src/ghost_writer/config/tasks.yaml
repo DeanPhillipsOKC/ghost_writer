@@ -12,16 +12,25 @@ ideation_task:
 character_development_task:
   description: >
     Create multi-dimensional characters with emotional arcs that resonate with readers.
+
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
   expected_output: >
     A character profile document that includes character backgrounds, motivations, and emotional arcs.
-  context:
-    - ideation_task
   agent: character_developer
   output_file: output/character_development.json
+  context:
+    - ideation_task
 
 plot_development_task:
   description: >
     Develop the plot structure of the novel, including rising action, climax, falling action, and resolution.
+
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
+    
+    Character Development (if blank, additional context will be provided in this prompt from the character
+    development task): {character_development}
   expected_output: >
     A detailed plot outline that includes the main events and character arcs.
   context:
@@ -34,6 +43,12 @@ sublots_development_task:
   description: >
     Create subplots that enhance the main plot and character arcs.  These should be interwoven with the
     main plot and add depth to the story.
+
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
+    
+    Character Development (if blank, additional context will be provided in this prompt from the character
+    development task): {character_development}
   expected_output: >
     A document that outlines the subplots, including their connections to the main plot and character arcs.
   context:
@@ -50,6 +65,9 @@ book_development_task:
 
     Author: {author}
     Title: {title}
+
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
   expected_output: >
     Info about the book
   context:
@@ -61,6 +79,9 @@ artistic_vision_task:
   description: >
     Create a visual representation of the novel's themes, characters, and settings.  This will be used to
     guide the artist in creating illustrations.
+
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
   expected_output: >
     A document that includes descriptions of the visual elements, including character designs, settings, and
     color palettes.  This will be used to guide the artist in creating illustrations.
@@ -79,6 +100,9 @@ act1_development_task:
       - Exposition: Introduce setting, protagonist, tone, and rules of the world.
       - Inciting Incident: A distruption to the protagonist's life that demands a response.
       - Plot Point 1 - A choice or event that propels the character into the main conflict or journey.
+
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
 
     IMPORTANT: 
       - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
@@ -108,6 +132,9 @@ act2_development_task:
       - Personal Stakes Increase: The protagonist changes, or begins to.
       - Plot Point 2 - A major crisis or low point, usually a loss or betrayal
 
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
+
     IMPORTANT: 
       - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 
         descriptions, etc. should be creative and engaging.
@@ -134,6 +161,9 @@ act3_development_task:
       - Climax: Final, most intense confrontation. The protagonist makes a key choice or sacrifice.
       - Denouement: Loose ends tied up. Reflect on meaning and change.
       - Final Image: A lasting impression that encapsulates the story’s arc or message.
+
+    Story Idea (if blank, additional context will be provided in this prompt from the ideation task):
+    {ideation}
 
     IMPORTANT: 
       - Never use structural terms like "Act 1", or "Inciting Incident" in the outline. Act titles, 

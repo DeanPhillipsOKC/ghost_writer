@@ -5,7 +5,7 @@ from crewai.agents.agent_builder.base_agent import BaseAgent
 from ghost_writer.models import Idea, Plot, Characters, Act, Book, ArtisticVision, SubPlots
 from ghost_writer.services.book_writer_service import BookWriterService
 from ghost_writer.tools.convert_to_pdf_tool import MarkdownToPDFTool
-from ghost_writer.utils.filesystem_utils import purge_directory
+from ghost_writer.utils.filesystem_utils import purge_directory, file_exists, get_json
 
 from typing import List
 
@@ -32,6 +32,12 @@ class GhostWriter():
             author_agent=self.author(),
             disable_illustration=self.disable_illustration)
         
+        if file_exists('output/ideation.json'):
+            inputs["ideation"] = get_json('output/ideation.json')
+
+        if file_exists('output/character_development.json'):
+            inputs["character_development"] = get_json('output/character_development.json')
+
        # MarkdownToPDFTool().run(
        #     markdown_path="output/book_finetuned.md",
        #     output_pdf_path="output/tactile_reveries_2_2nd_draft.pdf")
@@ -138,7 +144,6 @@ class GhostWriter():
     def on_artistic_vision_created(self, task_output):
         self.book_writer.set_artistic_vision(task_output.pydantic)
 
-
     @task
     def artistic_vision_task(self) -> Task:
         return Task(
@@ -173,10 +178,12 @@ class GhostWriter():
 
     @crew
     def crew(self) -> Crew:
-        return Crew(
+        c = Crew(
             agents=self.agents,
             tasks=self.tasks, 
             process=Process.sequential,
             verbose=True,
             memory=False
         )
+        self._crew = c
+        return c

@@ -4,6 +4,7 @@ import warnings
 
 from datetime import datetime
 
+from ghost_writer import crew
 from ghost_writer.crew import GhostWriter
 from ghost_writer.utils.filesystem_utils import file_exists
 
@@ -47,8 +48,13 @@ def run():
     try:
         crew = GhostWriter().crew()
         
+        crew.tasks = [t for t in crew.tasks if t.name == "plot_development_task"]
+
         if file_exists("output/ideation.json"):
             crew.tasks = [t for t in crew.tasks if t.name != "ideation_task"]
+
+        if file_exists("output/character_development.json"):
+            crew.tasks = [t for t in crew.tasks if t.name != "character_development_task"]
 
         crew.kickoff(inputs=inputs)
     except Exception as e:
